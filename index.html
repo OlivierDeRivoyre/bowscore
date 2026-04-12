@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bow Score Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <header>
+        <h1>Bow Score Tracker</h1>
+        <div id="header-buttons" style="display: none;">
+            <button id="create-session-btn">Create New Session</button>
+            <button id="back-btn">Back</button>
+        </div>
+    </header>
+    <main>
+        <!-- Main Page -->
+        <div id="main-page">
+            <h2>Welcome</h2>
+            <button id="create-session-btn-main">Create New Session</button>
+            <button id="view-history-btn">View History</button>
+        </div>
+
+        <!-- Setup Page -->
+        <div id="setup-page" style="display: none;">
+            <form id="setup-form">
+                <label for="distance">Distance:</label>
+                <select id="distance" required>
+                    <option value="">Select Distance</option>
+                    <option value="10">10m</option>
+                    <option value="15">15m</option>
+                    <option value="20">20m</option>
+                    <option value="25">25m</option>
+                    <option value="30">30m</option>
+                    <option value="40">40m</option>
+                    <option value="50">50m</option>
+                    <option value="60">60m</option>
+                    <option value="70">70m</option>
+                </select>
+                <label for="target-size">Target Size:</label>
+                <select id="target-size" required>
+                    <option value="">Select Target Size</option>
+                    <option value="60">60cm</option>
+                    <option value="80">80cm</option>
+                    <option value="120">120cm</option>
+                </select>
+                <button type="submit">Start Session</button>
+            </form>
+        </div>
+
+        <!-- Score Page -->
+        <div id="score-page" style="display: none;">
+            <div id="session-info"></div>
+            <form id="score-form">
+                <div id="series-inputs"></div>
+                <button type="submit">Save Session</button>
+            </form>
+        </div>
+
+        <!-- History Page -->
+        <div id="history-page" style="display: none;">
+            <div id="filters">
+                <label for="filter-distance">Distance:</label>
+                <select id="filter-distance">
+                    <option value="">All</option>
+                    <option value="10">10m</option>
+                    <option value="15">15m</option>
+                    <option value="20">20m</option>
+                    <option value="25">25m</option>
+                    <option value="30">30m</option>
+                    <option value="40">40m</option>
+                    <option value="50">50m</option>
+                    <option value="60">60m</option>
+                    <option value="70">70m</option>
+                </select>
+                <label for="filter-target">Target Size:</label>
+                <select id="filter-target">
+                    <option value="">All</option>
+                    <option value="60">60cm</option>
+                    <option value="80">80cm</option>
+                    <option value="120">120cm</option>
+                </select>
+            </div>
+            <ul id="history-list"></ul>
+        </div>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
