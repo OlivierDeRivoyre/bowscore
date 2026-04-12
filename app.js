@@ -30,6 +30,10 @@ function showPage(pageId) {
     } else {
         headerButtons.style.display = 'block';
     }
+    // Refresh history when navigating to history page
+    if (pageId === 'history-page' && typeof displayHistory === 'function') {
+        displayHistory();
+    }
 }
 
 function initScorePage() {
@@ -164,9 +168,9 @@ if (document.getElementById('history-list')) {
             
             let relativeDate = '';
             if (diffDays === 0) {
-                relativeDate = 'today';
+                relativeDate = 'Today';
             } else if (diffDays === 1) {
-                relativeDate = 'yesterday';
+                relativeDate = 'Yesterday';
             } else if (diffDays === 2) {
                 relativeDate = '2 days ago';
             } else if (diffDays >= 3 && diffDays <= 6) {
