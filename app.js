@@ -36,6 +36,25 @@ function showPage(pageId) {
     }
 }
 
+function calculateCurrentScore() {
+    let total = 0;
+    for (let i = 1; i <= 6; i++) {
+        const value = document.getElementById(`series${i}`)?.value;
+        const score = value === '' ? 0 : parseInt(value, 10);
+        if (!Number.isNaN(score)) {
+            total += score;
+        }
+    }
+    return total;
+}
+
+function updateCurrentScoreDisplay() {
+    const display = document.getElementById('current-score');
+    if (display) {
+        display.textContent = `Current score: ${calculateCurrentScore()}`;
+    }
+}
+
 function initScorePage() {
     const session = JSON.parse(localStorage.getItem('currentSession') || '{}');
     const editIndex = localStorage.getItem('editIndex');
@@ -48,10 +67,15 @@ function initScorePage() {
         div.className = 'series';
         div.innerHTML = `
             <label for="series${i}">Series ${i} (0-60):</label>
-            <input type="number" id="series${i}" min="0" max="60" required value="${session.scores ? (session.scores[i-1] || '') : ''}">
+            <input type="number" id="series${i}" min="0" max="60" value="${session.scores ? (session.scores[i-1] || '') : ''}">
         `;
+        const input = div.querySelector('input');
+        if (input) {
+            input.addEventListener('input', updateCurrentScoreDisplay);
+        }
         seriesInputs.appendChild(div);
     }
+    updateCurrentScoreDisplay();
     const submitBtn = document.querySelector('button[type="submit"]');
     submitBtn.textContent = isEditing ? 'Update Session' : 'Save Session';
 }
@@ -101,7 +125,9 @@ if (document.getElementById('score-form')) {
         e.preventDefault();
         const scores = [];
         for (let i = 1; i <= 6; i++) {
-            scores.push(parseInt(document.getElementById(`series${i}`).value));
+            const value = document.getElementById(`series${i}`).value;
+            const score = value === '' ? 0 : parseInt(value, 10);
+            scores.push(Number.isNaN(score) ? 0 : score);
         }
         const session = JSON.parse(localStorage.getItem('currentSession') || '{}');
         session.scores = scores;
