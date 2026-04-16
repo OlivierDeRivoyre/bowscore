@@ -116,6 +116,14 @@ if (document.getElementById('score-form')) {
         saveSessions(sessions);
         localStorage.removeItem('currentSession');
         localStorage.removeItem('editIndex');
+
+        const filterDistanceEl = document.getElementById('filter-distance');
+        const filterTargetEl = document.getElementById('filter-target');
+        if (filterDistanceEl && filterTargetEl) {
+            filterDistanceEl.value = session.distance;
+            filterTargetEl.value = session.targetSize;
+        }
+
         navigateTo('history-page');
     });
 }
@@ -176,7 +184,7 @@ if (document.getElementById('history-list')) {
             } else if (diffDays >= 3 && diffDays <= 6) {
                 const sessionDayOfWeek = dateObj.getDay();
                 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                relativeDate = `last ${dayNames[sessionDayOfWeek]}`;
+                relativeDate = `Last ${dayNames[sessionDayOfWeek]}`;
             } else if (diffDays < 30) {
                 relativeDate = `${diffDays} days ago`;
             } else if (diffDays < 365) {
