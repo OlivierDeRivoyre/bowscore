@@ -47,6 +47,8 @@
                     <option value="80">80cm</option>
                     <option value="120">120cm</option>
                 </select>
+                <label for="session-note">Note:</label>
+                <input type="text" id="session-note" maxlength="200" placeholder="Optional note">
                 <button type="submit">Start Session</button>
             </form>
         </div>
@@ -56,6 +58,10 @@
             <div id="session-info"></div>
             <div id="current-score" style="margin: 0.5rem 0; font-weight: bold;">Current score: 0</div>
             <form id="score-form">
+                <div class="session-note-block">
+                    <label for="score-note">Note:</label>
+                    <input type="text" id="score-note" maxlength="200" placeholder="Optional note">
+                </div>
                 <div id="series-inputs"></div>
                 <button type="submit">Save Session</button>
             </form>

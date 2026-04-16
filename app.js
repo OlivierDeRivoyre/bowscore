@@ -62,6 +62,11 @@ function initScorePage() {
     document.getElementById('session-info').innerHTML = `<p>Distance: ${session.distance || ''}m, Target: ${session.targetSize || ''}cm</p>`;
     const seriesInputs = document.getElementById('series-inputs');
     seriesInputs.innerHTML = ''; // Clear previous inputs
+    const scoreNoteInput = document.getElementById('score-note');
+    if (scoreNoteInput) {
+        scoreNoteInput.value = session.note || '';
+    }
+
     for (let i = 1; i <= 6; i++) {
         const div = document.createElement('div');
         div.className = 'series';
@@ -112,7 +117,8 @@ if (document.getElementById('setup-form')) {
         e.preventDefault();
         const distance = document.getElementById('distance').value;
         const targetSize = document.getElementById('target-size').value;
-        const session = { distance, targetSize, scores: [], date: new Date().toISOString() };
+        const note = document.getElementById('session-note').value.trim();
+        const session = { distance, targetSize, note, scores: [], date: new Date().toISOString() };
         localStorage.setItem('currentSession', JSON.stringify(session));
         navigateTo('score-page');
     });
@@ -130,7 +136,9 @@ if (document.getElementById('score-form')) {
             scores.push(Number.isNaN(score) ? 0 : score);
         }
         const session = JSON.parse(localStorage.getItem('currentSession') || '{}');
+        const note = document.getElementById('score-note').value.trim();
         session.scores = scores;
+        session.note = note;
         session.total = scores.reduce((a, b) => a + b, 0);
         const sessions = getSessions();
         const editIndex = localStorage.getItem('editIndex');
@@ -232,6 +240,7 @@ if (document.getElementById('history-list')) {
             } else if (topScoresForCategory[2] === s.total) {
                 medal = '🥉';
             }
+            const noteHtml = s.note ? `<div style="color: #666; margin-top: 0.25rem;">Note: ${s.note}</div>` : '';
             
             li.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -239,6 +248,7 @@ if (document.getElementById('history-list')) {
                         <strong>${relativeDate}</strong> <span style="color: #666; font-size: 0.9em;">${dayName} ${dateStr} ${timeStr}</span> - ${s.distance}m, ${s.targetSize}cm<br>
                         <span style="color: #666;">Scores: ${s.scores.join(', ')}</span><br>
                         Total: <strong>${s.total}</strong>/360 ${medal}
+                        ${noteHtml}
                     </div>
                     <div>
                         <button class="edit-btn" data-index="${allIndex}" style="background-color: #2196F3; padding: 0.5rem; margin-right: 0.5rem;">Edit</button>
