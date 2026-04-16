@@ -240,6 +240,25 @@ if (document.getElementById('history-list')) {
             } else if (topScoresForCategory[2] === s.total) {
                 medal = '🥉';
             }
+            
+            // Compute score color based on difference from best
+            let scoreColor = 'black';
+            const bestScore = topScoresForCategory[0];
+            if (bestScore !== undefined) {
+                const diff = bestScore - s.total;
+                if (diff === 0) {
+                    scoreColor = 'green';
+                } else if (diff <= 10) {
+                    scoreColor = 'darkgreen';
+                } else if (diff <= 25) {
+                    scoreColor = 'goldenrod';
+                } else if (diff <= 50) {
+                    scoreColor = 'darkorange';
+                } else {
+                    scoreColor = 'darkred';
+                }
+            }
+            
             const noteHtml = s.note ? `<div style="color: #666; margin-top: 0.25rem;">Note: ${s.note}</div>` : '';
             
             li.innerHTML = `
@@ -247,7 +266,7 @@ if (document.getElementById('history-list')) {
                     <div>
                         <strong>${relativeDate}</strong> <span style="color: #666; font-size: 0.9em;">${dayName} ${dateStr} ${timeStr}</span> - ${s.distance}m, ${s.targetSize}cm<br>
                         <span style="color: #666;">Scores: ${s.scores.join(', ')}</span><br>
-                        Total: <strong>${s.total}</strong>/360 ${medal}
+                        Total: <strong style="color: ${scoreColor};">${s.total}</strong> / 360 ${medal}
                         ${noteHtml}
                     </div>
                     <div>
