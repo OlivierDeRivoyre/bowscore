@@ -47,6 +47,11 @@ select, input {
     margin-top: 0.5rem;
 }
 
+.series input {
+    width: 120px;
+    font-size: 1.1em;
+}
+
 #series-inputs {
     display: flex;
     flex-direction: column;

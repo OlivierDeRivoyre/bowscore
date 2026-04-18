@@ -72,11 +72,16 @@ function initScorePage() {
         div.className = 'series';
         div.innerHTML = `
             <label for="series${i}">Series ${i} (0-60):</label>
-            <input type="number" id="series${i}" min="0" max="60" value="${session.scores ? (session.scores[i-1] || '') : ''}">
+            <input type="number" id="series${i}" min="0" max="60" maxlength="2" value="${session.scores ? (session.scores[i-1] || '') : ''}">
         `;
         const input = div.querySelector('input');
         if (input) {
-            input.addEventListener('input', updateCurrentScoreDisplay);
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length > 2) {
+                    e.target.value = e.target.value.slice(0, 2);
+                }
+                updateCurrentScoreDisplay();
+            });
         }
         seriesInputs.appendChild(div);
     }
