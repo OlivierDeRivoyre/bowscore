@@ -302,4 +302,55 @@ if (document.getElementById('history-list')) {
     document.getElementById('filter-distance').addEventListener('change', displayHistory);
     document.getElementById('filter-target').addEventListener('change', displayHistory);
     displayHistory();
+
+    // Export data button
+    document.getElementById('export-data-btn').addEventListener('click', () => {
+        const sessions = getSessions();
+        const dataToExport = {
+            sessions: sessions,
+            exportDate: new Date().toISOString()
+        };
+        const dataStr = JSON.stringify(dataToExport, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `bow-score-data-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    });
+
+    // Load data button
+    document.getElementById('load-data-btn').addEventListener('click', () => {
+        document.getElementById('load-data-input').click();
+    });
+
+    document.getElementById('load-data-input').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const importedData = JSON.parse(event.target.result);
+                if (!importedData.sessions || !Array.isArray(importedData.sessions)) {
+                    alert('Invalid file format. Please select a valid export file.');
+                    return;
+                }
+
+                const existingSessions = getSessions();
+                const mergedSessions = [...existingSessions, ...importedData.sessions];
+                saveSessions(mergedSessions);
+                displayHistory();
+                alert(`Successfully imported ${importedData.sessions.length} session(s).`);
+            } catch (error) {
+                alert('Error reading file: ' + error.message);
+            }
+        };
+        reader.readAsText(file);
+        // Reset the input so the same file can be loaded again
+        e.target.value = '';
+    });
 }
